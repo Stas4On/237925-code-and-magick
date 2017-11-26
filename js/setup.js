@@ -23,20 +23,25 @@ function getColorEyes() {
   return COAT_COLORS[getRandomInt(0, EYES_COLOR.length)];
 }
 
-// работа с DOM
-var similarListElement = document.querySelector('.setup-similar-list');
-var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
-
-document.querySelector('.setup').classList.remove('hidden');
-
-for (var i = 0; i < 4; i++) {
+var renderWizard = function () {
   var wizardElement = similarWizardTemplate.cloneNode(true);
 
   wizardElement.querySelector('.setup-similar-label').textContent = getName();
   wizardElement.querySelector('.wizard-coat').setAttribute('style', 'fill:' + getColorCoat() + ';');
   wizardElement.querySelector('.wizard-eyes').setAttribute('style', 'fill:' + getColorEyes() + ';');
 
-  similarListElement.appendChild(wizardElement);
+  return wizardElement;
 }
 
+// работа с DOM
+var similarListElement = document.querySelector('.setup-similar-list');
+var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
+
+document.querySelector('.setup').classList.remove('hidden');
+
+var fragment = document.createDocumentFragment();
+for (var i = 0; i < 4; i++) {
+  fragment.appendChild(renderWizard());
+}
+similarListElement.appendChild(fragment);
 document.querySelector('.setup-similar').classList.remove('hidden');
